@@ -1,4 +1,4 @@
-package com.dolan.dolancatamoveapp.tv
+package com.dolan.dolancatamoveapp.movie
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -8,39 +8,32 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class TvViewModel : ViewModel() {
-
-    private val itemList: MutableLiveData<MutableList<ResultsItem>> = MutableLiveData()
-
+class MovieViewModel : ViewModel() {
+    val listItem: MutableLiveData<MutableList<Movie>> = MutableLiveData()
     private var disposable: Disposable? = null
 
-    fun setData() {
-        val itemData: MutableList<ResultsItem> = mutableListOf()
-        disposable = ApiClient.instance.getTvData()
+    fun setMovie() {
+        val item: MutableList<Movie> = mutableListOf()
+        disposable = ApiClient.instance.getMovieData()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .map {
                 it.body()?.results
             }
+            .doFinally {
+                listItem.postValue(item)
+            }
             .subscribe(
                 { result ->
                     if (result != null) {
-                        for (a: ResultsItem? in result) {
-                            itemData.add(a!!)
+                        for (e: Movie? in result) {
+                            if (e != null) {
+                                item.add(e)
+                            }
                         }
                     }
-                    itemList.postValue(itemData)
                 },
                 { error -> Log.e("Error", "$error") }
             )
     }
-
-    fun onDestroy() {
-        if (disposable != null) {
-            disposable?.dispose()
-        }
-    }
-
-    fun getTv(): MutableLiveData<MutableList<ResultsItem>> = itemList
-
 }
