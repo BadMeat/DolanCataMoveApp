@@ -9,6 +9,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class MovieViewModel : ViewModel() {
+
     val listItem: MutableLiveData<MutableList<Movie>> = MutableLiveData()
     private var disposable: Disposable? = null
 

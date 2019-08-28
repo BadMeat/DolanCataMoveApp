@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dolan.dolancatamoveapp.R
 import com.dolan.dolancatamoveapp.detail.DetailActivity
+import com.dolan.dolancatamoveapp.invisible
 import kotlinx.android.synthetic.main.fragment_movie.*
 
 class MovieFragment : Fragment() {
@@ -32,7 +33,8 @@ class MovieFragment : Fragment() {
 
         movieAdapter = MovieAdapter(movieList) {
             val intent = Intent(context, DetailActivity::class.java)
-            intent.putExtra(DetailActivity.EXTRA_ID, 2)
+            intent.putExtra(DetailActivity.EXTRA_ID, it.id)
+            intent.putExtra(DetailActivity.EXTRA_TYPE, 2)
             startActivity(intent)
         }
         recycler_view.layoutManager = GridLayoutManager(context, 2)
@@ -47,6 +49,7 @@ class MovieFragment : Fragment() {
         if (it != null) {
             movieList.addAll(it)
             movieAdapter.notifyDataSetChanged()
+            progress_bar.invisible()
         }
     }
 }

@@ -58,4 +58,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.0.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.0.0'
+
+    //Anko Sqlite
+    implementation "org.jetbrains.anko:anko-sqlite:$anko_version"
 }
