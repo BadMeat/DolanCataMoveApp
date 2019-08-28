@@ -1,6 +1,7 @@
 package com.dolan.dolancatamoveapp
 
-import com.dolan.dolancatamoveapp.detail.DetailResponse
+import com.dolan.dolancatamoveapp.detail.DetailMovieResponse
+import com.dolan.dolancatamoveapp.detail.DetailTvResponse
 import com.dolan.dolancatamoveapp.movie.MovieResponse
 import com.dolan.dolancatamoveapp.tv.TvResponse
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -38,11 +39,15 @@ class ApiClient {
         return dataService.getTv()
     }
 
-    fun getDetail(id: Int): Observable<Response<DetailResponse>> {
-        return dataService.getDetail(id)
+    fun getTvDetail(id: Int): Observable<Response<DetailTvResponse>> {
+        return dataService.getTvDetail(id)
     }
 
     fun getMovieData(): Observable<Response<MovieResponse>> {
         return dataService.getMovie()
+    }
+
+    fun getMovieDetail(id: Int): Observable<Response<DetailMovieResponse>> {
+        return dataService.getMovieDetail(id)
     }
 }

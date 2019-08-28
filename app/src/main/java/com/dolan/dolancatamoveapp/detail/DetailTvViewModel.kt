@@ -8,21 +8,20 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class DetailViewModel : ViewModel() {
+class DetailTvViewModel : ViewModel() {
 
-    private val itemList: MutableLiveData<DetailResponse> = MutableLiveData()
+    private val itemList: MutableLiveData<DetailTvResponse> = MutableLiveData()
     private var disposable: Disposable? = null
 
     fun setData(id: Int) {
-        var item: DetailResponse? = null
-        disposable = ApiClient.instance.getDetail(id)
+        var item: DetailTvResponse? = null
+        disposable = ApiClient.instance.getTvDetail(id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .map {
                 it.body()
             }
             .doFinally {
-                Log.d("Itemku cuy","$item")
                 itemList.postValue(item)
             }
             .subscribe(
@@ -35,7 +34,7 @@ class DetailViewModel : ViewModel() {
             )
     }
 
-    fun getItem(): MutableLiveData<DetailResponse> {
+    fun getItem(): MutableLiveData<DetailTvResponse> {
         return itemList
     }
 }

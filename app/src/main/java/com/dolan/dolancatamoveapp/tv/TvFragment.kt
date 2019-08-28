@@ -32,8 +32,7 @@ class TvFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter = TvAdapter(itemList) {
             val intent = Intent(context, DetailActivity::class.java)
-            intent.putExtra(DetailActivity.EXTRA_TYPE, 1)
-            intent.putExtra(DetailActivity.EXTRA_TV, it.id)
+            intent.putExtra(DetailActivity.EXTRA_ID, 1)
             startActivity(intent)
         }
         recycler_view.layoutManager = GridLayoutManager(context, 2)

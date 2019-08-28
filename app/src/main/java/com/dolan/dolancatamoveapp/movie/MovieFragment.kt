@@ -32,8 +32,7 @@ class MovieFragment : Fragment() {
 
         movieAdapter = MovieAdapter(movieList) {
             val intent = Intent(context, DetailActivity::class.java)
-            intent.putExtra(DetailActivity.EXTRA_TYPE, 2)
-            intent.putExtra(DetailActivity.EXTRA_MOVIE, it.id)
+            intent.putExtra(DetailActivity.EXTRA_ID, 2)
             startActivity(intent)
         }
         recycler_view.layoutManager = GridLayoutManager(context, 2)

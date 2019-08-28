@@ -2,7 +2,7 @@ package com.dolan.dolancatamoveapp.detail
 
 import com.google.gson.annotations.SerializedName
 
-data class DetailResponse(
+data class DetailTvResponse(
 
     @field:SerializedName("name")
     val name: String? = null,
