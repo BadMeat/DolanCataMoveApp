@@ -46,6 +46,7 @@ class TvFragment : Fragment() {
 
     private val getTv = Observer<MutableList<ResultsItem>> { t ->
         if (t != null) {
+            itemList.clear()
             itemList.addAll(t)
             adapter.notifyDataSetChanged()
             progress_bar.invisible()
@@ -54,7 +55,9 @@ class TvFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.onDestroy()
+        if (::viewModel.isInitialized) {
+            viewModel.onDestroy()
+        }
     }
 
 }

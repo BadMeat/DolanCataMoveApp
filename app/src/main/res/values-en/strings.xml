@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DolanCataMoveApp</string>
     <string name="poster">Poster</string>
@@ -5,9 +6,10 @@
     <string name="favorite">Favorite</string>
     <string name="movie">Movie</string>
 
-    <string name="kind">Jenis Tidak Diketahui</string>
-    <string name="save_success">Data Berhasil Ditambah</string>
-    <string name="delete_success">Data berhasil dihapus</string>
+    <string name="kind">No Category</string>
+    <string name="save_success">Save Success</string>
+    <string name="delete_success">Delete Success</string>
+
     <string name="language">Language</string>
     <string name="rating">Rating : </string>
 </resources>

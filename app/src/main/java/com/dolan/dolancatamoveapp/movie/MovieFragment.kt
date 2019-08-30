@@ -47,6 +47,7 @@ class MovieFragment : Fragment() {
 
     private val getMovie = Observer<MutableList<Movie>> {
         if (it != null) {
+            movieList.clear()
             movieList.addAll(it)
             movieAdapter.notifyDataSetChanged()
             progress_bar.invisible()

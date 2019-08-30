@@ -1,13 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DolanCataMoveApp</string>
     <string name="poster">Poster</string>
-    <string name="tv">TV</string>
-    <string name="favorite">Favorite</string>
-    <string name="movie">Movie</string>
+    <string name="tv">Televisi</string>
+    <string name="favorite">Kesukaan</string>
+    <string name="movie">Film</string>
 
     <string name="kind">Jenis Tidak Diketahui</string>
     <string name="save_success">Data Berhasil Ditambah</string>
     <string name="delete_success">Data berhasil dihapus</string>
-    <string name="language">Language</string>
-    <string name="rating">Rating : </string>
+
+    <string name="language">Bahasa</string>
+    <string name="rating">Penilaian : </string>
 </resources>

@@ -22,6 +22,9 @@ class TvViewModel : ViewModel() {
             .map {
                 it.body()?.results
             }
+            .doFinally {
+                itemList.postValue(itemData)
+            }
             .subscribe(
                 { result ->
                     if (result != null) {
@@ -29,7 +32,6 @@ class TvViewModel : ViewModel() {
                             itemData.add(a!!)
                         }
                     }
-                    itemList.postValue(itemData)
                 },
                 { error -> Log.e("Error", "$error") }
             )

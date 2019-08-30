@@ -7,6 +7,7 @@ import com.dolan.dolancatamoveapp.ApiClient
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 
 class DetailTvViewModel : ViewModel() {
 
@@ -14,8 +15,14 @@ class DetailTvViewModel : ViewModel() {
     private var disposable: Disposable? = null
 
     fun setData(id: Int) {
+        Log.d("Locale Language", "${Locale.getDefault()}")
+        val language = Locale.getDefault().toString()
+        var lang = "en-US"
+        if (language.equals("in_ID", true)) {
+            lang = "id"
+        }
         var item: DetailTvResponse? = null
-        disposable = ApiClient.instance.getTvDetail(id)
+        disposable = ApiClient.instance.getTvDetail(id, lang)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .map {

@@ -39,8 +39,8 @@ class ApiClient {
         return dataService.getTv()
     }
 
-    fun getTvDetail(id: Int): Observable<Response<DetailTvResponse>> {
-        return dataService.getTvDetail(id)
+    fun getTvDetail(id: Int, language: String): Observable<Response<DetailTvResponse>> {
+        return dataService.getTvDetail(id, language)
     }
 
     fun getMovieData(): Observable<Response<MovieResponse>> {

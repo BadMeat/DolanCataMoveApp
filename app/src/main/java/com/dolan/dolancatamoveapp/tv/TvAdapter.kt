@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dolan.dolancatamoveapp.BuildConfig
 import com.dolan.dolancatamoveapp.R
+import com.dolan.dolancatamoveapp.convertDate
 import com.squareup.picasso.Picasso
 
 class TvAdapter(
@@ -39,7 +40,7 @@ class TvAdapter(
 
         fun bindItem(e: ResultsItem, listener: (ResultsItem) -> Unit) {
             textTitle.text = e.name
-            textDate.text = e.firstAirDate
+            textDate.text = convertDate(e.firstAirDate)
             Picasso.get().load("${BuildConfig.BASE_IMAGE}${e.posterPath}").into(imgPoster)
             itemView.setOnClickListener {
                 listener(e)

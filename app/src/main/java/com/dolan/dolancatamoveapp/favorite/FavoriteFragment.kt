@@ -1,15 +1,16 @@
 package com.dolan.dolancatamoveapp.favorite
 
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.provider.Settings
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dolan.dolancatamoveapp.R
+import com.dolan.dolancatamoveapp.detail.DetailActivity
 import com.dolan.dolancatamoveapp.invisible
 import kotlinx.android.synthetic.main.fragment_favorite.*
 import java.lang.ref.WeakReference
@@ -31,7 +32,10 @@ class FavoriteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         favAdapter = FavoriteAdapter(favList) {
-
+            val intent = Intent(context, DetailActivity::class.java)
+            intent.putExtra(DetailActivity.EXTRA_TYPE, it.type)
+            intent.putExtra(DetailActivity.EXTRA_ID, it.id?.toInt())
+            startActivity(intent)
         }
         recycler_view.layoutManager = GridLayoutManager(context, 2)
         recycler_view.adapter = favAdapter
@@ -44,6 +48,7 @@ class FavoriteFragment : Fragment() {
 
     private val getFavorite = Observer<MutableList<Favorite>> {
         if (it != null) {
+            favList.clear()
             favList.addAll(it)
             favAdapter.notifyDataSetChanged()
             progress_bar.invisible()
