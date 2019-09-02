@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dolan.dolancatamoveapp.R
 import com.squareup.picasso.Picasso
+import java.util.*
 
 class FavoriteAdapter(
     private val favList: List<Favorite>,
@@ -36,9 +37,15 @@ class FavoriteAdapter(
         private val txtRate: TextView = view.findViewById(R.id.txt_rate)
         private val imgPoster: ImageView = view.findViewById(R.id.img_poster)
 
+        private val lang = Locale.getDefault().toString()
+
         fun bindItem(e: Favorite, listener: (Favorite) -> Unit) {
             txtTitle.text = e.name
-            txtDetail.text = e.detail
+            if (lang.equals("in_ID", true)) {
+                txtDetail.text = e.detail_id
+            } else {
+                txtDetail.text = e.detail_us
+            }
             txtRate.text = e.rate.toString()
             Picasso.get().load(e.poster).into(imgPoster)
             itemView.setOnClickListener {

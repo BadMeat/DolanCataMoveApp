@@ -19,11 +19,13 @@ import org.jetbrains.anko.db.classParser
 import org.jetbrains.anko.db.delete
 import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
+import java.util.*
 
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var tvViewModel: DetailTvViewModel
-    private var itemList: DetailTvResponse? = null
+    private var itemTvListId: DetailTvResponse? = null
+    private var itemTvListUs: DetailTvResponse? = null
 
     private lateinit var movieViewModel: DetailMovieViewModel
     private var itemMovie: DetailMovieResponse? = null
@@ -38,6 +40,8 @@ class DetailActivity : AppCompatActivity() {
         const val EXTRA_ID = "extraId"
         const val EXTRA_TYPE = "extraType"
     }
+
+    private lateinit var lang: String
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_favorite, menu)
@@ -75,6 +79,7 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+        lang = Locale.getDefault().toString()
         id = intent.getIntExtra(EXTRA_ID, 0)
         type = intent.getIntExtra(EXTRA_TYPE, 0)
         loadData(id)
@@ -90,9 +95,17 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private val getItem = Observer<DetailTvResponse> {
+    private val getTvId = Observer<DetailTvResponse> {
         if (it != null) {
-            itemList = it
+            itemTvListId = it
+            setUI(it.name, it.posterPath, it.voteAverage, it.overview)
+            progress_bar.invisible()
+        }
+    }
+
+    private val getTvUs = Observer<DetailTvResponse> {
+        if (it != null) {
+            itemTvListId = it
             setUI(it.name, it.posterPath, it.voteAverage, it.overview)
             progress_bar.invisible()
         }
@@ -114,9 +127,16 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setTv(id: Int) {
-        itemList = DetailTvResponse()
+        itemTvListId = DetailTvResponse()
         tvViewModel = ViewModelProviders.of(this).get(DetailTvViewModel::class.java)
-        tvViewModel.getItem().observe(this, getItem)
+        val tvId = tvViewModel.getItemId()
+        val tvUs = tvViewModel.getItemUs()
+        tvViewModel.getItemUs()
+        if (lang.equals("en-US", true)) {
+            tvUs.observe(this, getTvId)
+        } else {
+            tvId.observe(this, getTvUs)
+        }
         tvViewModel.setData(id)
     }
 
@@ -136,12 +156,13 @@ class DetailActivity : AppCompatActivity() {
                 database.use {
                     insert(
                         Favorite.TABLE_NAME,
-                        Favorite.FAV_ID to itemList?.id,
-                        Favorite.FAV_NAME to itemList?.name,
-                        Favorite.FAV_RATE to itemList?.voteAverage,
-                        Favorite.FAV_DETAIL_US to itemList?.overview,
-                        Favorite.FAV_POSTER to "${BuildConfig.BASE_IMAGE}${itemList?.posterPath}",
-                        Favorite.FAV_TYPE to type
+                        Favorite.FAV_ID to itemTvListId?.id,
+                        Favorite.FAV_NAME to itemTvListId?.name,
+                        Favorite.FAV_RATE to itemTvListId?.voteAverage,
+                        Favorite.FAV_DETAIL_ID to itemTvListId?.overview,
+                        Favorite.FAV_POSTER to "${BuildConfig.BASE_IMAGE}${itemTvListId?.posterPath}",
+                        Favorite.FAV_TYPE to type,
+                        Favorite.FAV_DETAIL_US to itemTvListUs?.overview
                     )
                 }
                 isFavorite = true

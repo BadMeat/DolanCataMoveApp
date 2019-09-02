@@ -11,7 +11,8 @@ import java.util.*
 
 class DetailTvViewModel : ViewModel() {
 
-    private val itemList: MutableLiveData<DetailTvResponse> = MutableLiveData()
+    private val itemListId: MutableLiveData<DetailTvResponse> = MutableLiveData()
+    private val itemListUs: MutableLiveData<DetailTvResponse> = MutableLiveData()
     private var disposable: Disposable? = null
 
     fun setData(id: Int) {
@@ -21,7 +22,8 @@ class DetailTvViewModel : ViewModel() {
         if (language.equals("in_ID", true)) {
             lang = "id"
         }
-        var item: DetailTvResponse? = null
+        var itemId: DetailTvResponse? = null
+        var itemUs: DetailTvResponse? = null
         disposable = ApiClient.instance.getTvDetail(id, lang)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
@@ -29,19 +31,34 @@ class DetailTvViewModel : ViewModel() {
                 it.body()
             }
             .doFinally {
-                itemList.postValue(item)
+                itemListId.postValue(itemId)
             }
             .subscribe(
                 { result ->
-                    item = result
+                    itemId = result
                 },
                 { error ->
                     Log.e("Error", "$error")
                 }
             )
+        disposable = ApiClient.instance.getTvDetail(id, "en-US")
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .map {
+                it.body()
+            }
+            .doFinally {
+                itemListUs.postValue(itemUs)
+            }
+            .subscribe(
+                { result -> itemUs = result },
+                { error -> Log.e("Error", "$error") }
+            )
     }
 
-    fun getItem(): MutableLiveData<DetailTvResponse> {
-        return itemList
+    fun getItemId(): MutableLiveData<DetailTvResponse> {
+        return itemListId
     }
+
+    fun getItemUs(): MutableLiveData<DetailTvResponse> = itemListUs
 }
