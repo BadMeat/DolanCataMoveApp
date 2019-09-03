@@ -97,6 +97,7 @@ class DetailActivity : AppCompatActivity() {
 
     private val getTvId = Observer<DetailTvResponse> {
         if (it != null) {
+            Log.d("Ini dari indo ", "$it")
             itemTvListId = it
             setUI(it.name, it.posterPath, it.voteAverage, it.overview)
             progress_bar.invisible()
@@ -105,7 +106,8 @@ class DetailActivity : AppCompatActivity() {
 
     private val getTvUs = Observer<DetailTvResponse> {
         if (it != null) {
-            itemTvListId = it
+            Log.d("Ini dari US ", "$it")
+            itemTvListUs = it
             setUI(it.name, it.posterPath, it.voteAverage, it.overview)
             progress_bar.invisible()
         }
@@ -131,13 +133,13 @@ class DetailActivity : AppCompatActivity() {
         tvViewModel = ViewModelProviders.of(this).get(DetailTvViewModel::class.java)
         val tvId = tvViewModel.getItemId()
         val tvUs = tvViewModel.getItemUs()
-        tvViewModel.getItemUs()
+        Log.d("bahasa digunakan","$lang")
         if (lang.equals("en-US", true)) {
-            tvUs.observe(this, getTvId)
+            tvUs.observe(this, getTvUs)
         } else {
-            tvId.observe(this, getTvUs)
+            tvId.observe(this, getTvId)
         }
-        tvViewModel.setData(id)
+        tvViewModel.setTv(id)
     }
 
 
