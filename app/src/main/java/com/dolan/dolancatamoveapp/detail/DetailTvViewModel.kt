@@ -11,10 +11,8 @@ import java.util.*
 
 class DetailTvViewModel : ViewModel() {
 
-    private val itemListId: MutableLiveData<DetailTvResponse> = MutableLiveData()
-    private val itemListUs: MutableLiveData<DetailTvResponse> = MutableLiveData()
+    private val itemList: MutableLiveData<DetailTvResponse> = MutableLiveData()
     private var disposable: Disposable? = null
-    private var disposableUs : Disposable? = null
 
     fun setTv(id: Int) {
         Log.d("Locale Language", "${Locale.getDefault()}")
@@ -24,7 +22,6 @@ class DetailTvViewModel : ViewModel() {
             lang = "id"
         }
         var itemId: DetailTvResponse? = null
-        var itemUs: DetailTvResponse? = null
         disposable = ApiClient.instance.getTvDetail(id, lang)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
@@ -32,7 +29,7 @@ class DetailTvViewModel : ViewModel() {
                 it.body()
             }
             .doFinally {
-                itemListId.postValue(itemId)
+                itemList.postValue(itemId)
             }
             .subscribe(
                 { result ->
@@ -42,27 +39,9 @@ class DetailTvViewModel : ViewModel() {
                     Log.e("Error", "$error")
                 }
             )
-
-//        disposableUs = ApiClient.instance.getTvDetail(id, "en-US")
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribeOn(Schedulers.io())
-//            .map {
-//                it.body()
-//            }
-//            .doFinally {
-//                itemListUs.postValue(itemUs)
-//            }
-//            .subscribe(
-//                { result -> itemUs = result },
-//                { error -> Log.e("Error", "$error") }
-//            )
     }
 
     fun getItemId(): MutableLiveData<DetailTvResponse> {
-        return itemListId
-    }
-
-    fun getItemUs(): MutableLiveData<DetailTvResponse> {
-        return itemListUs
+        return itemList
     }
 }

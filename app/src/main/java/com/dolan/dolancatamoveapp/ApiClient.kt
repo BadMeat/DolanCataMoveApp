@@ -47,7 +47,7 @@ class ApiClient {
         return dataService.getMovie()
     }
 
-    fun getMovieDetail(id: Int): Observable<Response<DetailMovieResponse>> {
-        return dataService.getMovieDetail(id)
+    fun getMovieDetail(id: Int, language: String): Observable<Response<DetailMovieResponse>> {
+        return dataService.getMovieDetail(id, language)
     }
 }

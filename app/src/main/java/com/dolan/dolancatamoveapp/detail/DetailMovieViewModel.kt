@@ -7,6 +7,7 @@ import com.dolan.dolancatamoveapp.ApiClient
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 
 /**
  * Created by Bencoleng on 28/08/2019.
@@ -18,7 +19,12 @@ class DetailMovieViewModel : ViewModel() {
 
     fun setMovie(id: Int) {
         var item: DetailMovieResponse? = null
-        disposable = ApiClient.instance.getMovieDetail(id)
+        val language = Locale.getDefault().toString()
+        var lang = "en-US"
+        if (language.equals("in_ID", true)) {
+            lang = "id"
+        }
+        disposable = ApiClient.instance.getMovieDetail(id, lang)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .map {

@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.dolan.dolancatamoveapp.BuildConfig
 import com.dolan.dolancatamoveapp.R
+import com.dolan.dolancatamoveapp.convertDate
 import com.dolan.dolancatamoveapp.favorite.Favorite
 import com.dolan.dolancatamoveapp.favorite.database
 import com.dolan.dolancatamoveapp.invisible
@@ -24,8 +25,7 @@ import java.util.*
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var tvViewModel: DetailTvViewModel
-    private var itemTvListId: DetailTvResponse? = null
-    private var itemTvListUs: DetailTvResponse? = null
+    private var itemTvList: DetailTvResponse? = null
 
     private lateinit var movieViewModel: DetailMovieViewModel
     private var itemMovie: DetailMovieResponse? = null
@@ -97,17 +97,7 @@ class DetailActivity : AppCompatActivity() {
 
     private val getTvId = Observer<DetailTvResponse> {
         if (it != null) {
-            Log.d("Ini dari indo ", "$it")
-            itemTvListId = it
-            setUI(it.name, it.posterPath, it.voteAverage, it.overview)
-            progress_bar.invisible()
-        }
-    }
-
-    private val getTvUs = Observer<DetailTvResponse> {
-        if (it != null) {
-            Log.d("Ini dari US ", "$it")
-            itemTvListUs = it
+            itemTvList = it
             setUI(it.name, it.posterPath, it.voteAverage, it.overview)
             progress_bar.invisible()
         }
@@ -129,16 +119,9 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setTv(id: Int) {
-        itemTvListId = DetailTvResponse()
+        itemTvList = DetailTvResponse()
         tvViewModel = ViewModelProviders.of(this).get(DetailTvViewModel::class.java)
-        val tvId = tvViewModel.getItemId()
-        val tvUs = tvViewModel.getItemUs()
-        Log.d("bahasa digunakan","$lang")
-        if (lang.equals("en-US", true)) {
-            tvUs.observe(this, getTvUs)
-        } else {
-            tvId.observe(this, getTvId)
-        }
+        tvViewModel.getItemId().observe(this, getTvId)
         tvViewModel.setTv(id)
     }
 
@@ -158,13 +141,13 @@ class DetailActivity : AppCompatActivity() {
                 database.use {
                     insert(
                         Favorite.TABLE_NAME,
-                        Favorite.FAV_ID to itemTvListId?.id,
-                        Favorite.FAV_NAME to itemTvListId?.name,
-                        Favorite.FAV_RATE to itemTvListId?.voteAverage,
-                        Favorite.FAV_DETAIL_ID to itemTvListId?.overview,
-                        Favorite.FAV_POSTER to "${BuildConfig.BASE_IMAGE}${itemTvListId?.posterPath}",
+                        Favorite.FAV_ID to itemTvList?.id,
+                        Favorite.FAV_NAME to itemTvList?.name,
+                        Favorite.FAV_RATE to itemTvList?.voteAverage,
+                        Favorite.FAV_DETAIL to itemTvList?.overview,
+                        Favorite.FAV_POSTER to "${BuildConfig.BASE_IMAGE}${itemTvList?.posterPath}",
                         Favorite.FAV_TYPE to type,
-                        Favorite.FAV_DETAIL_US to itemTvListUs?.overview
+                        Favorite.FAV_RELEASE to convertDate(itemTvList?.firstAirDate)
                     )
                 }
                 isFavorite = true
@@ -188,9 +171,10 @@ class DetailActivity : AppCompatActivity() {
                         Favorite.FAV_ID to itemMovie?.id,
                         Favorite.FAV_NAME to itemMovie?.title,
                         Favorite.FAV_RATE to itemMovie?.voteAverage,
-                        Favorite.FAV_DETAIL_US to itemMovie?.overview,
+                        Favorite.FAV_DETAIL to itemMovie?.overview,
                         Favorite.FAV_POSTER to "${BuildConfig.BASE_IMAGE}${itemMovie?.posterPath}",
-                        Favorite.FAV_TYPE to type
+                        Favorite.FAV_TYPE to type,
+                        Favorite.FAV_RELEASE to convertDate(itemMovie?.releaseDate)
                     )
                 }
                 isFavorite = true

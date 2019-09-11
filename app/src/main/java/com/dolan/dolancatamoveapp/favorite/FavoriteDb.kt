@@ -23,10 +23,10 @@ class FavoriteDb(context: Context) : ManagedSQLiteOpenHelper(context, "Favorite.
             Favorite.FAV_ID to INTEGER + PRIMARY_KEY,
             Favorite.FAV_NAME to TEXT,
             Favorite.FAV_RATE to REAL,
-            Favorite.FAV_DETAIL_US to TEXT,
+            Favorite.FAV_DETAIL to TEXT,
             Favorite.FAV_POSTER to TEXT,
             Favorite.FAV_TYPE to INTEGER,
-            Favorite.FAV_DETAIL_ID to TEXT
+            Favorite.FAV_RELEASE to TEXT
         )
     }
 

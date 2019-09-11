@@ -17,5 +17,8 @@ data class DetailTvResponse(
     val voteAverage: Double? = null,
 
     @field:SerializedName("poster_path")
-    val posterPath: String? = null
+    val posterPath: String? = null,
+
+    @field:SerializedName("first_air_date")
+    val firstAirDate: String? = null
 )
